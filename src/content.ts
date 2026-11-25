@@ -4,9 +4,9 @@ import { defineSettings } from "./lib/settings";
 import { defineStatuses } from "./lib/status";
 
 export const content = {
-  title: "BAZE 템플릿",
+  title: "영수증 제출함",
   owner: {
-    title: "가게 관리",
+    title: "교회 회계 장부",
     members: ["정은재", "한도윤"],
   },
 };

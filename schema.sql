@@ -23,3 +23,32 @@ CREATE TABLE IF NOT EXISTS inquiry (
   assignee TEXT NOT NULL DEFAULT '',
   created_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%SZ', 'now'))
 );
+
+CREATE TABLE IF NOT EXISTS receipts (
+  id TEXT PRIMARY KEY,
+  spent_on TEXT NOT NULL,
+  submitter TEXT NOT NULL,
+  description TEXT NOT NULL,
+  amount INTEGER NOT NULL CHECK(amount > 0),
+  bank TEXT NOT NULL,
+  account TEXT NOT NULL,
+  holder TEXT NOT NULL,
+  photo TEXT NOT NULL,
+  checked_at TEXT,
+  printed_at TEXT,
+  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE INDEX IF NOT EXISTS receipts_date ON receipts(spent_on DESC, created_at DESC);
+
+CREATE TABLE IF NOT EXISTS transactions (
+  id TEXT PRIMARY KEY,
+  booked_on TEXT NOT NULL,
+  direction TEXT NOT NULL CHECK(direction IN ('in', 'out')),
+  description TEXT NOT NULL,
+  amount INTEGER NOT NULL CHECK(amount > 0),
+  receipt_id TEXT UNIQUE REFERENCES receipts(id),
+  exempt INTEGER NOT NULL DEFAULT 0 CHECK(exempt IN (0, 1)),
+  created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  CHECK(exempt = 0 OR receipt_id IS NULL)
+);
+CREATE INDEX IF NOT EXISTS transactions_date ON transactions(booked_on DESC, created_at DESC);

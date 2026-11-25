@@ -13,6 +13,7 @@ export const routes: RouteObject[] = [
     element: <App />,
     children: [
       { path: "/admin", element: <Admin />, handle: { owner: true } },
+      { index: true, element: <Home /> },
       { path: "*", element: <Home /> },
     ],
   },

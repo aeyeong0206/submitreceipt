@@ -1,0 +1,14 @@
+export type Receipt = { id: string; spent_on: string; submitter: string; description: string; amount: number; checked_at: string | null; printed_at: string | null };
+export type ReceiptDetail = { bank: string; account: string; holder: string; photo: string };
+export type Transaction = { id: string; booked_on: string; direction: "in" | "out"; description: string; amount: number; receipt_id: string | null; exempt: number };
+export type Ledger = { receipts: Receipt[]; transactions: Transaction[] };
+export const today = () => new Intl.DateTimeFormat("sv-SE", { timeZone: "Asia/Seoul", year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date());
+export const firstLedgerYear = 2026;
+export const firstLedgerMonth = `${firstLedgerYear}-01`;
+export const isLedgerYear = (value: string) => /^\d{4}$/.test(value) && Number(value) >= firstLedgerYear;
+export const isLedgerMonth = (value: string) => /^\d{4}-(0[1-9]|1[0-2])$/.test(value) && isLedgerYear(value.slice(0, 4));
+const number = new Intl.NumberFormat("ko-KR");
+export const won = (n: number) => `${number.format(n)}원`;
+const day = new Intl.DateTimeFormat("ko-KR", { year: "numeric", month: "long", day: "numeric", weekday: "short", timeZone: "Asia/Seoul" });
+export const dayLabel = (value: string) => day.format(new Date(value));
+export const stamp = (value: string) => new Intl.DateTimeFormat("ko-KR", { dateStyle: "medium", timeStyle: "short", timeZone: "Asia/Seoul" }).format(new Date(value));
